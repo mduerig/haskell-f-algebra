@@ -84,7 +84,8 @@ ppAlg (Lit x) = show(x)
 ppAlg (Add x y) = "(" ++ x ++ "+" ++ y ++ ")"
 ppAlg (Prod x y) = "(" ++ x ++ "*" ++ y ++ ")"
 
-
+main = do
+  print "fooo"
 
 
 
