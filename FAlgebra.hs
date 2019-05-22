@@ -1,3 +1,5 @@
+module FAlgebra where
+
 -- the generic f-algebras
 type Algebra f a = f a -> a 
 
@@ -80,12 +82,10 @@ evalAlg (Add x y) = x + y
 evalAlg (Prod x y) = x * y
 
 ppAlg :: Algebra (ExprF Int) String
-ppAlg (Lit x) = show(x)
+ppAlg (Lit x) = show x
 ppAlg (Add x y) = "(" ++ x ++ "+" ++ y ++ ")"
 ppAlg (Prod x y) = "(" ++ x ++ "*" ++ y ++ ")"
 
-main = do
-  print "fooo"
 
 
 

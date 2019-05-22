@@ -1,4 +1,3 @@
--- Haskell Playground 1.0
 cata pleaseWait (successor.successor.successor.successor $ zero)
 cata nat (successor.successor $ zero)
 

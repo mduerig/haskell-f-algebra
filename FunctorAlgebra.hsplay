@@ -1,4 +1,3 @@
--- Haskell Playground 1.0
 evalFib (toNatF 0)
 evalFib (toNatF 1)
 evalFib (toNatF 2)
@@ -22,35 +21,45 @@ evalSumL (toListF [1])
 evalSumL (toListF [1,2])
 evalSumL (toListF [1,2,3])
 
-
+:{
 evalExpr 
   (constFix 1)
+:}
 
+:{
 evalExpr 
   (addFix 
     (constFix 1)
     (constFix 2))
-             
+:}
+
+:{
 evalExpr 
   (mulFix 
     (constFix 3) 
     (addFix 
       (constFix 1)
       (constFix 2)))
-                 
+:}
 
+:{
 evalTree 
   (leaf 1)
+:}
   
+:{
 evalTree 
   (branch 
     (leaf 1) 
     (leaf 2))
+:}
 
+:{
 evalTree 
   (branch 
     (branch 
       (leaf 3)
       (leaf 4)) 
     (leaf 2))
+:}
 

@@ -4,14 +4,12 @@ cabal-version: 1.22
 build-type: Simple
 license: AllRightsReserved
 stability: experimental
-x-ghc-framework-version: 8.0.2-9.6-1
-x-last-ide-version: HfM1.6.0
 
-executable algebra
-    main-is: Main.hs
+library
     build-depends:
         base -any
     default-language: Haskell2010
     other-modules:
         FunctorAlgebra
+        FAlgebra
 
