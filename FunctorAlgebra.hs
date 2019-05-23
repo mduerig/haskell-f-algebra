@@ -18,7 +18,7 @@ cata alg = alg . fmap (cata alg) . unfix
 
 -- Natural numbers as functor
 
-data NatF a = ZeroF | SuccF a 
+data NatF a = ZeroF | SuccF a
   deriving (Functor, Show)
 
 --instance Functor NatF where
@@ -36,7 +36,7 @@ succFix n = Fix (SuccF n)
 
 toNatF :: Int -> Fix NatF
 toNatF 0 = zeroFix
-toNatF n = succFix (toNatF (n -1))
+toNatF n = succFix (toNatF (n - 1))
 
 
 -- Fibonacci algebra over NatF with carrier (Int, Int) 
@@ -45,12 +45,32 @@ fib ZeroF = (1, 1)
 fib (SuccF (m, n)) = (n, n + m)
 
 evalFib :: Fix NatF -> (Int, Int)
-evalFib = cata fib 
+evalFib = cata fib
 
+-- evalFib zeroFix
+-- = evalFib (Fix ZeroF)
+-- = cata fib (Fix ZeroF)
+-- = (fib . fmap (cata fib) . unfix) (Fix ZeroF)
+-- = (fib . fmap (cata fib)) (unfix (Fix ZeroF))
+-- = (fib . fmap (cata fib)) ZeroF
+-- = fib (fmap (cata fib) ZeroF)
+-- = fib ZeroF
+-- = (1, 1)
+
+-- evalFib (succFix zeroFix)
+-- = cata fib (Fix (SuccF zeroFix))
+-- = (fib . fmap (cata fib) . unfix) (Fix (SuccF zeroFix))
+-- = (fib . fmap (cata fib)) (unfix (Fix (SuccF zeroFix)))
+-- = (fib . fmap (cata fib)) (SuccF zeroFix)
+-- = fib (fmap (cata fib) (SuccF zeroFix))
+-- = fib (SuccF ((cata fib) zeroFix))
+-- = fib (SuccF ((cata fib) (Fix ZeroF)))
+-- = fib (SuccF (1, 1))
+-- = (1, 2)
 
 -- F algebra over a list functor 
 
-data ListF x xs = Nil | Cons x xs 
+data ListF x xs = Nil | Cons x xs
   deriving (Functor, Show)
 
 --instance Functor (ListF x) where
@@ -66,8 +86,9 @@ consFix :: x -> Fix (ListF x) -> Fix (ListF x)
 consFix x xs = Fix (Cons x xs)
 
 toListF :: [x] -> Fix (ListF x)
-toListF [] = nilFix
-toListF (x:xs) = consFix x (toListF xs)
+toListF = foldr consFix nilFix
+--toListF [] = nilFix
+--toListF (x:xs) = consFix x (toListF xs)
 
 
 -- Length algebra over ListF with carrier Int
@@ -99,7 +120,7 @@ evalSumL = cata sumL
 
 -- F algebra for arithemtic 
 
-data ExprF a 
+data ExprF a
   = Const Int
   | Add a a
   | Mul a a
@@ -109,7 +130,7 @@ data ExprF a
 --  fmap f (Const n) = Const n
 --  fmap f (Add m n) = Add (f m) (f n)
 --  fmap f (Mul m n) = Mul (f m) (f n)
-  
+
 -- Fixed points
 
 constFix :: Int -> Fix ExprF
@@ -135,7 +156,7 @@ evalExpr = cata evalExprF
 
 -- Tree
 
-data TreeF b a 
+data TreeF b a
   = Branch a a
   | Leaf b
   deriving (Functor, Show)
