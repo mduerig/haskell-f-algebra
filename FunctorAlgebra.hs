@@ -90,6 +90,13 @@ toListF = foldr consFix nilFix
 --toListF [] = nilFix
 --toListF (x:xs) = consFix x (toListF xs)
 
+-- List algebra over ListF with carrier List
+list :: Algebra (ListF x) [x]
+list Nil = []
+list (Cons x xs) = x:xs
+
+evalList :: Fix (ListF x) -> [x]
+evalList = cata list
 
 -- Length algebra over ListF with carrier Int
 len :: Algebra (ListF x) Int
