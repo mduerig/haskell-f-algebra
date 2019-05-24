@@ -174,9 +174,9 @@ leaf x = Fix (Leaf x)
 branch :: Fix (TreeF b) -> Fix (TreeF b) -> Fix (TreeF b)
 branch l r = Fix (Branch l r)
 
-evalTreeF :: Algebra (TreeF Int) [Int]
-evalTreeF (Branch xs ys) = xs ++ ys
-evalTreeF (Leaf x) = [x]
+evalTreeF :: Algebra (TreeF Int) String
+evalTreeF (Branch xs ys) = "(" ++ xs ++ ys ++ ")"
+evalTreeF (Leaf x) = show x
 
 evalTree = cata evalTreeF
 
