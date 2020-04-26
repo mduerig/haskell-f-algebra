@@ -2,7 +2,7 @@
 
 module FunctorAlgebra where
 
--- Fixpoint of functors. 
+-- Fixpoint of functors.
 -- See https://bartoszmilewski.com/2017/02/28/f-algebras/
 
 -- Fix f :: f (Fix f) -> Fix f
@@ -39,7 +39,7 @@ toNatF 0 = zeroFix
 toNatF n = succFix (toNatF (n - 1))
 
 
--- Fibonacci algebra over NatF with carrier (Int, Int) 
+-- Fibonacci algebra over NatF with carrier (Int, Int)
 fib :: Algebra NatF (Int, Int)
 fib ZeroF = (1, 1)
 fib (SuccF (m, n)) = (n, n + m)
@@ -68,7 +68,7 @@ evalFib = cata fib
 -- = fib (SuccF (1, 1))
 -- = (1, 2)
 
--- F algebra over a list functor 
+-- F algebra over a list functor
 
 data ListF x xs = Nil | Cons x xs
   deriving (Functor, Show)
@@ -77,7 +77,7 @@ data ListF x xs = Nil | Cons x xs
 --  fmap f (Cons x xs) = Cons x (f xs)
 --  fmap f Nil = Nil
 
--- Fixed points 
+-- Fixed points
 
 nilFix :: Fix (ListF x)
 nilFix = Fix Nil
@@ -125,7 +125,7 @@ evalSumL :: Fix (ListF Int) -> Int
 evalSumL = cata sumL
 
 
--- F algebra for arithemtic 
+-- F algebra for arithemtic
 
 data ExprF a
   = Const Int
@@ -180,11 +180,17 @@ evalTreeF (Leaf x) = show x
 
 evalTree = cata evalTreeF
 
+countNodesF :: Algebra (TreeF a) Int
+countNodesF (Branch l r) = l + r
+countNodesF (Leaf _) = 1
 
+countNodes = cata countNodesF
 
+depthF :: Algebra (TreeF a) Int
+depthF (Branch l r) = if l > r then l + 1 else r + 1
+depthF (Leaf _) = 0
 
-
-
+depth = cata depthF
 
 
 
