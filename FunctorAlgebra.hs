@@ -5,6 +5,7 @@ module FunctorAlgebra where
 -- Fixpoint of functors.
 -- See https://bartoszmilewski.com/2017/02/28/f-algebras/
 
+-- Fix   :: (* -> *) -> *
 -- Fix   :: f (Fix f) -> Fix f
 -- unfix :: Fix f     -> f (Fix f)
 newtype Fix f = Fix {unfix::f (Fix f)}
