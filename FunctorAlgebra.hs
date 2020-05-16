@@ -125,8 +125,15 @@ sumL (Cons n s) = n + s
 evalSumL :: Num n => Fix (ListF n) -> n
 evalSumL = cata sumL
 
+-- deriving fold from the list algebra
+mkListAlgebra :: (a -> b -> b) -> b -> Algebra (ListF a) b
+mkListAlgebra _ b Nil = b
+mkListAlgebra f _ (Cons a b) = f a b
 
--- F algebra for arithemtic
+foldList :: (a -> b -> b) -> b -> Fix (ListF a) -> b
+foldList f b = cata (mkListAlgebra f b)
+
+-- F algebra for arithmetic
 
 data ExprF a
   = Const Int
