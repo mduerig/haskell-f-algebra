@@ -118,11 +118,11 @@ evalReverseL = cata reverseL
 
 
 -- Sum algebra over ListF with carrier Int
-sumL :: Algebra (ListF Int) Int
+sumL :: Num n => Algebra (ListF n) n
 sumL Nil = 0
 sumL (Cons n s) = n + s
 
-evalSumL :: Fix (ListF Int) -> Int
+evalSumL :: Num n => Fix (ListF n) -> n
 evalSumL = cata sumL
 
 
