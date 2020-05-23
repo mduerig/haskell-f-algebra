@@ -206,17 +206,28 @@ depthF (Leaf _) = 0
 depth = cata depthF
 
 
+-- Coalgebras
+type Coalgebra f a = a -> f a
 
+-- Anamorphism
+ana :: Functor f => Coalgebra f a -> a -> Fix f
+ana coalg = Fix . fmap (ana coalg) . coalg
 
+type StreamF a = (,) a
+type Stream a = Fix (StreamF a)
 
+nats :: Coalgebra (StreamF Int) Int
+nats n = (n, n + 1)
 
+toListAlg :: Algebra (StreamF a) [a]
+-- toListAlg (x, xs) = x:xs
+toListAlg = uncurry (:)
 
+toList :: Stream a -> [a]
+toList = cata toListAlg
 
-
-
-
-
-
+interval :: Int -> Int -> [Int]
+interval k n = take n $ toList $ ana nats k
 
 
 
