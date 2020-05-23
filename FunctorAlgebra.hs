@@ -238,6 +238,30 @@ intervalWithHylo :: Int -> Int -> [Int]
 intervalWithHylo k n = take n $ hylo natsCoalg toListAlg k
 
 
+-- Mergesort as hylomorphism
+type Tree a = Fix (TreeF [a])
 
+splitCoalg :: Ord a => Coalgebra (TreeF [a]) [a]
+splitCoalg []  = Leaf []
+splitCoalg [x] = Leaf [x]
+splitCoalg xs  = uncurry Branch $ splitAt (length xs `div` 2) xs
 
+split :: Ord a => [a] -> Tree a
+split = ana splitCoalg
+
+mergeAlg :: Ord a => Algebra (TreeF [a]) [a]
+mergeAlg (Leaf xs)      = xs
+mergeAlg (Branch ls rs) = merge ls rs
+  where
+    merge [] rs = rs
+    merge ls [] = ls
+    merge (l:ls) (r:rs) = if l < r
+      then l:merge ls (r:rs)
+      else r:merge (l:ls) rs
+
+merge :: Ord a => Tree a -> [a]
+merge = cata mergeAlg
+
+mergeSort :: Ord a => [a] -> [a]
+mergeSort = hylo splitCoalg mergeAlg
 
