@@ -45,6 +45,11 @@ fib :: Algebra NatF (Int, Int)
 fib ZeroF = (1, 1)
 fib (SuccF (m, n)) = (n, n + m)
 
+-- Algebra back to natural numbers
+nat :: Algebra NatF Int
+nat ZeroF = 0
+nat (SuccF n) = n + 1
+
 evalFib :: Fix NatF -> (Int, Int)
 evalFib = cata fib
 
