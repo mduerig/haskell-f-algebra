@@ -216,8 +216,8 @@ ana coalg = Fix . fmap (ana coalg) . coalg
 type StreamF a = (,) a
 type Stream a = Fix (StreamF a)
 
-nats :: Coalgebra (StreamF Int) Int
-nats n = (n, n + 1)
+natsCoalg :: Coalgebra (StreamF Int) Int
+natsCoalg n = (n, n + 1)
 
 toListAlg :: Algebra (StreamF a) [a]
 -- toListAlg (x, xs) = x:xs
@@ -227,12 +227,15 @@ toList :: Stream a -> [a]
 toList = cata toListAlg
 
 interval :: Int -> Int -> [Int]
-interval k n = take n $ toList $ ana nats k
+interval k n = take n $ toList $ ana natsCoalg k
 
+-- Hylomorphism
+hylo :: Functor f => Coalgebra f a -> Algebra f b -> a -> b
+hylo coalg alg = alg . fmap (hylo coalg alg) . coalg
+-- hylo coalg alg = cata alg . ana coalg
 
-
-
-
+intervalWithHylo :: Int -> Int -> [Int]
+intervalWithHylo k n = take n $ hylo natsCoalg toListAlg k
 
 
 
