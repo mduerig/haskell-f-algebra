@@ -50,6 +50,9 @@ nat :: Algebra NatF Int
 nat ZeroF = 0
 nat (SuccF n) = n + 1
 
+evalNat :: Fix NatF -> Int
+evalNat = cata nat
+
 evalFib :: Fix NatF -> (Int, Int)
 evalFib = cata fib
 
